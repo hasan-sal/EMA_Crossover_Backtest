@@ -13,5 +13,3 @@ def get_price_data(tick, start_date, end_date):
         return data.ffill().dropna()
     except Exception as e:
         print(f"Error fetching data for {tick}: {e}")
-
-print(get_price_data(TICKER, START_DATE, END_DATE))

@@ -2,32 +2,28 @@ import data
 import pandas as pd
 import numpy as np
 
-data = data.get_price_data(data.TICKER, data.START_DATE, data.END_DATE)
+def get_signals(ticker, start_date, end_date):
 
-data["EMA_20"] = data["Close"].ewm(span=20, adjust=False).mean()
-data["EMA_100"] = data["Close"].ewm(span=100, adjust=False).mean()
+    datas = data.get_price_data(ticker, start_date, end_date)
 
-data["highlow"] = abs(data["High"] - data["Low"])
-data["highclose"] = abs(data["High"] - data["Close"].shift(1))
-data["lowclose"] = abs(data["Low"] - data["Close"].shift(1))
+    datas["EMA_20"] = datas["Close"].ewm(span=20, adjust=False).mean()
+    datas["EMA_100"] = datas["Close"].ewm(span=100, adjust=False).mean()
 
-data["TR"] = data[["highlow", "highclose", "lowclose"]].max(axis=1)
-data["ATR"] = data["TR"].rolling(window=14).mean()
+    datas["highlow"] = abs(datas["High"] - datas["Low"])
+    datas["highclose"] = abs(datas["High"] - datas["Close"].shift(1))
+    datas["lowclose"] = abs(datas["Low"] - datas["Close"].shift(1))                 
+    datas["TR"] = datas[["highlow", "highclose", "lowclose"]].max(axis=1)
+    datas["ATR"] = datas["TR"].rolling(window=14).mean()
 
+    datas["Buy"] = (datas["EMA_20"].shift(1) < datas["EMA_100"].shift(1)) \
+            & (datas["EMA_20"] > datas["EMA_100"]) \
+            & (datas["ATR"].shift(3) < datas["ATR"].shift(2)) \
+            & (datas["ATR"].shift(2) < datas["ATR"].shift(1)) \
+            & (datas["ATR"].shift(1) < datas["ATR"])
 
-
-data["Buy"] = (data["EMA_20"].shift(1) < data["EMA_100"].shift(1)) \
-          & (data["EMA_20"] > data["EMA_100"]) \
-          & (data["ATR"].shift(3) < data["ATR"].shift(2)) \
-          & (data["ATR"].shift(2) < data["ATR"].shift(1)) \
-          & (data["ATR"].shift(1) < data["ATR"])
-
-data["Sell"] = (data["EMA_20"].shift(1) > data["EMA_100"].shift(1))\
-          & (data["EMA_20"] < data["EMA_100"]) \
-          & (data["ATR"].shift(3) < data["ATR"].shift(2)) \
-          & (data["ATR"].shift(2) < data["ATR"].shift(1)) \
-          & (data["ATR"].shift(1) < data["ATR"])
-
-
-print(data[data["Buy"] == True])
-print(data[data["Sell"] == True])
+    datas["Sell"] = (datas["EMA_20"].shift(1) > datas["EMA_100"].shift(1))\
+            & (datas["EMA_20"] < datas["EMA_100"]) \
+            & (datas["ATR"].shift(3) < datas["ATR"].shift(2)) \
+            & (datas["ATR"].shift(2) < datas["ATR"].shift(1)) \
+            & (datas["ATR"].shift(1) < datas["ATR"])
+    return datas
