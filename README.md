@@ -1,5 +1,3 @@
-# Algo Trading Strategy Backtest
-
 EMA crossover trend-following strategy with ATR-based stop loss, backtested on BTC-USD.
 
 ## Strategy
@@ -40,4 +38,3 @@ Parameters were optimized on in-sample data (2010–2017) via grid search, then 
 - Add transaction costs and slippage
 - Test across a multi-asset universe
 - Add Sharpe ratio and max drawdown to reported metrics
-```
