@@ -1,4 +1,3 @@
-```markdown
 # Algo Trading Strategy Backtest
 
 EMA crossover trend-following strategy with ATR-based stop loss, backtested on BTC-USD.
