@@ -1,9 +1,9 @@
 import yfinance as yf 
 import pandas as pd
 
-TICKER = "^GSPC"
-START_DATE= "2015-01-01"
-END_DATE= "2025-01-01"
+TICKER = "BTC-USD"
+START_DATE= "2011-01-01"
+END_DATE= "2026-01-01"
 
 def get_price_data(tick, start_date, end_date):
     try:
