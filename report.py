@@ -6,7 +6,7 @@ import backtest
 
 TICKER, START_DATE, END_DATE = "SPY", "2015-01-01", "2026-01-01"
 
-total_gain, compound_annual_growth_rate, total_trades, portfolio_values, sharpe_ratio = backtest.backtest_strategy(TICKER, START_DATE, END_DATE, 17, 85, 12)
+total_gain, compound_annual_growth_rate, total_trades, portfolio_values, sharpe_ratio = backtest.backtest_strategy(TICKER, START_DATE, END_DATE, 19, 75, 16)
 
 price_data = data.get_price_data(TICKER, START_DATE, END_DATE)
 buy_hold_value = price_data["Close"] / price_data["Close"].iloc[0]

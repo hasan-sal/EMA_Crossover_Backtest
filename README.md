@@ -5,7 +5,7 @@ EMA crossover trend-following strategy with ATR-based stop loss, backtested on S
 - **Signal:** Buy when fast EMA crosses above slow EMA (and vice versa for sell)
 - **Risk management:** Stop loss at entry price − 2×ATR (ATR used for risk sizing only, not signal confirmation)
 - **Execution:** Trades fill at the next bar's open after a signal fires on the current bar's close, to avoid look-ahead bias
-- **Parameters:** Fast EMA 17, Slow EMA 85, ATR period 12 (selected via grid search on in-sample data)
+- **Parameters:** Fast EMA 19, Slow EMA 75, ATR period 16 (selected via grid search on in-sample data)
 
 ## Files
 
@@ -17,14 +17,15 @@ EMA crossover trend-following strategy with ATR-based stop loss, backtested on S
 
 ## Methodology
 
-Parameters were grid-searched on in-sample data (2015–2023), then checked against out-of-sample data (2023–2026). The out-of-sample window only produced a single trade — too few to draw any conclusion from — so the results below are the full-period (2015–2026) backtest instead, reported next to plain buy-and-hold over the same window as the actual benchmark.
+Parameters were grid-searched on in-sample data (2015–2023, `optimization.py`), then checked against out-of-sample data (2023–2026). That out-of-sample window only produced a single trade — too few to draw any conclusion from — so the table below also reports the full-period (2015–2026) backtest next to plain buy-and-hold as the actual benchmark. Note the full-period number includes the in-sample window the parameters were fit on, so it's a more optimistic estimate than a true held-out test — the single-trade out-of-sample result is the closer thing to a real test, and it isn't usable.
 
-## Results (SPY, 2015–2026)
+## Results (SPY)
 
-| | Total Gain | CAGR | Sharpe | Trades |
-|---|---|---|---|---|
-| Strategy | 175.73% | 10.59% | 1.20 | 14 |
-| Buy & Hold | 299.74% | 13.42% | 0.96 | — |
+| | Window | Total Gain | CAGR | Sharpe | Trades |
+|---|---|---|---|---|---|
+| Strategy (full period) | 2015–2026 | 177.48% | 10.66% | 1.21 | 14 |
+| Buy & Hold | 2015–2026 | 299.74% | 13.42% | 0.96 | — |
+| Strategy (out-of-sample) | 2023–2026 | 28.24% | 20.77% | 1.72 | 1 |
 
 ## Finding
 

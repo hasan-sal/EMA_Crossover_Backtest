@@ -6,9 +6,9 @@ import matplotlib.pyplot as plt
 fast_ema_range = range(5, 21, 2)     
 slow_ema_range = range(50, 101, 5)    
 atr_range = range(10, 21, 2)          
-in_sample_start_date = "2024-01-01"
-in_sample_end_date = "2025-01-01"
-out_of_sample_start_date = "2025-01-01"
+in_sample_start_date = "2015-01-01"
+in_sample_end_date = "2023-01-01"
+out_of_sample_start_date = "2023-01-01"
 out_of_sample_end_date = "2026-01-01"
 
 results = []
@@ -34,6 +34,14 @@ for fast_ema in fast_ema_range:
 
 
 results_df = pd.DataFrame(results)
-print("Optimization Results:")
+print("In-Sample Optimization Results:")
 print(results_df.sort_values(by="sharpe_ratio", ascending=False).head(10))
+
+best = results_df.sort_values(by="sharpe_ratio", ascending=False).iloc[0]
+oos_gain, oos_cagr, oos_trades, oos_portfolio_values, oos_sharpe = backtest.backtest_strategy(
+    data.TICKER, out_of_sample_start_date, out_of_sample_end_date,
+    int(best["fast_ema"]), int(best["slow_ema"]), int(best["atr_period"]))
+
+print(f"\nBest in-sample params: fast={int(best['fast_ema'])}, slow={int(best['slow_ema'])}, atr={int(best['atr_period'])}")
+print(f"Out-of-Sample -> Total Gain: {oos_gain:.2%} | CAGR: {oos_cagr:.2%} | Trades: {oos_trades} | Sharpe: {oos_sharpe:.2f}")
 
